@@ -1,6 +1,6 @@
 # Cosmos Odyssey
 
-**Play it here:** the GitHub Pages link of this repository (it runs in the browser, no install).
+**Play it here: https://wess49492.github.io/cosmos-odyssey/** (runs in the browser, no install).
 
 A browser game for the **NASA Space Apps Challenge 2026**, challenge **Space Mission Design Game**, by **Team Capella Stars** (Recife, Brazil).
 
