@@ -155,6 +155,22 @@ button.alt[aria-pressed="true"]::before { content: ""; position: absolute; inset
 .alt .line.change svg { color: var(--accent); }
 .risks { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .risks[hidden] { display: none; }
+.risks.wtl { display: block; }
+.risks.wtl span { display: inline; gap: 0; padding: 0; border: 0; border-radius: 0; background: none; font-size: inherit; }
+.wtl .w-why { margin: 0 0 12px; font-size: 13.5px; line-height: 1.45; color: var(--body); max-width: 90ch; }
+.wtl .w-bar { position: relative; height: 14px; margin: 26px 0 6px; border-radius: 7px; background: rgba(134, 182, 255, .14); }
+.wtl .w-win { position: absolute; top: 0; bottom: 0; border-radius: 7px; background: #22c55e; box-shadow: 0 0 12px rgba(34, 197, 94, .55); }
+.wtl .w-mk { position: absolute; top: -4px; width: 4px; height: 22px; margin-left: -2px; border-radius: 2px; background: #cfd8ea; transition: background .25s, box-shadow .25s; }
+.wtl .w-mk.now { margin-left: 0; }
+.wtl .w-mk span { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); white-space: nowrap; font: 600 11px var(--game); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.wtl .w-mk.now span { left: 0; transform: none; }
+.wtl .w-mk.best span { bottom: auto; top: 26px; }
+.wtl .w-bar { margin-bottom: 26px; }
+.risks.wtl .w-lg { display: inline-flex; }
+.wtl .w-mk.on { background: var(--accent); box-shadow: 0 0 10px var(--accent); } .wtl .w-mk.on span { color: var(--accent); }
+.wtl .w-ax { display: flex; align-items: center; justify-content: space-between; font: 600 11px var(--game); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.wtl .w-lg { display: inline-flex; align-items: center; gap: 6px; } .wtl .w-lg i { width: 18px; height: 8px; border-radius: 4px; background: #22c55e; }
+.wtl .w-src { margin: 8px 0 0; font-size: 11.5px; color: var(--muted); }
 .risks h4 { margin: 0 6px 0 0; font: 700 13px var(--game); letter-spacing: .06em; text-transform: uppercase; color: var(--risk); }
 .risks span { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border: 1px solid rgba(255, 157, 108, .35); border-radius: 999px; background: rgba(255, 157, 108, .08); font-size: 13px; }
 .risks span svg { width: 14px; height: 14px; color: var(--risk); }
@@ -624,6 +640,28 @@ const I18N = {
         }
       }
     },
+    // launch window (phase 2, after the launch site). Idea from GMAT launch-window analysis, a challenge resource. SIMPLIFIED numbers
+    winTitle: 'Janela de lançamento',
+    winSub: 'A Terra e o destino não param de se mover. A janela de lançamento é o período em que a viagem gasta menos combustível. Escolha a data.',
+    winSrc: 'Ideia do GMAT, ferramenta de análise de missões da NASA (análise de janela de lançamento), recurso oficial do desafio.',
+    winWhy: {
+      estudar: 'Marte: a Terra e Marte ficam em boa posição a cada 26 meses, mais ou menos. O Perseverance foi lançado em julho de 2020 e pousou uns 7 meses depois.',
+      amostras: 'Asteroide Bennu: a órbita dele é parecida com a da Terra, então as boas janelas só voltam a cada 6 anos, mais ou menos. A OSIRIS-REx foi lançada em setembro de 2016 e passou de raspão pela Terra em 2017 para ganhar impulso.',
+      recursos: 'A Lua: ela dá uma volta na Terra a cada 27 dias, então quase todo mês abre uma janela de alguns dias.'
+    },
+    winAxis: { estudar: ['Hoje', '+5 anos'], amostras: ['Hoje', '+8 anos'], recursos: ['Hoje', '+90 dias'] },
+    winLegend: 'janela',
+    winMarks: { now: 'Agora', edge: '1º dia', best: 'Melhor dia' },
+    winOpts: [
+      { id: 'best', icon: 'star', name: 'Melhor dia da janela', pro: 'Gasta menos combustível na viagem', con: 'Esperar um pouco: o cronograma cresce' },
+      { id: 'edge', icon: 'time', name: 'Primeiro dia da janela', pro: 'Sem espera a mais', con: 'A viagem gasta mais combustível' },
+      { id: 'now', icon: 'warn', name: 'Lançar agora, fora da janela', pro: 'Sai hoje', con: 'O destino está no lugar errado: muito mais combustível para alcançá-lo' }
+    ],
+    winText: 'Escolha quando lançar. As faixas verdes são as janelas.',
+    winPicked: (o) => `${o.name}: ${o.pro.toLowerCase()}, mas ${o.con.charAt(0).toLowerCase() + o.con.slice(1)}.`,
+    ctaWin: 'Escolha uma data',
+    ctaWinOk: 'Confirmar data',
+    toastWin: (o) => `Data de lançamento: ${o.name}`,
     objText: 'Agora é com você. Escolha o objetivo da missão nos cartões acima.',
     objPicked: (a) => `${a.name}: ${a.change}`,
     ctaObj: 'Escolha um objetivo',
@@ -744,6 +782,7 @@ const I18N = {
       lesson: {
         obj: 'A tarefa no destino falhou, e é lá que está a maior parte da ciência da missão.',
         test: 'O teste reprovou a nave antes do voo. Na NASA, cada volta ao projeto custa tempo e dinheiro.',
+        window: 'Lançar fora da janela: o destino estava no lugar errado e a viagem queimou o combustível que faltou no fim.',
         fuelChem: 'O combustível quase acabou. O motor químico gasta muito; o elétrico (íons) economiza.',
         fuel: 'O combustível quase acabou. Cada tarefa errada no caminho custou um pouco dele.',
         energy: 'A energia ficou no limite. Painel solar perde força longe do Sol; o gerador nuclear não.',
@@ -914,6 +953,27 @@ const I18N = {
         }
       }
     },
+    winTitle: 'Launch window',
+    winSub: 'Earth and the target never stop moving. A launch window is the time when the trip costs the least fuel. Pick your launch date.',
+    winSrc: "Idea from GMAT, NASA's open-source mission analysis tool (launch-window analysis), official challenge resource.",
+    winWhy: {
+      estudar: 'Mars: Earth and Mars line up about every 26 months. Perseverance launched in July 2020 and landed about 7 months later.',
+      amostras: "Asteroid Bennu: its orbit is similar to Earth's, so good windows only come back about every 6 years. OSIRIS-REx launched in September 2016 and swung by Earth in 2017 for a boost.",
+      recursos: 'The Moon: it goes around Earth every 27 days, so a window of a few days opens almost every month.'
+    },
+    winAxis: { estudar: ['Today', '+5 years'], amostras: ['Today', '+8 years'], recursos: ['Today', '+90 days'] },
+    winLegend: 'window',
+    winMarks: { now: 'Now', edge: '1st day', best: 'Best day' },
+    winOpts: [
+      { id: 'best', icon: 'star', name: 'Best day of the window', pro: 'The trip uses the least fuel', con: 'Wait a little: the schedule grows' },
+      { id: 'edge', icon: 'time', name: 'First day of the window', pro: 'No extra waiting', con: 'The trip uses more fuel' },
+      { id: 'now', icon: 'warn', name: 'Launch now, outside the window', pro: 'Leaves today', con: 'The target is in the wrong place: much more fuel to catch it' }
+    ],
+    winText: 'Choose when to launch. The green bands are the windows.',
+    winPicked: (o) => `${o.name}: ${o.pro.toLowerCase()}, but ${o.con.charAt(0).toLowerCase() + o.con.slice(1)}.`,
+    ctaWin: 'Choose a date',
+    ctaWinOk: 'Confirm date',
+    toastWin: (o) => `Launch date: ${o.name}`,
     objText: 'Now it is up to you. Pick the mission objective on the cards above.',
     objPicked: (a) => `${a.name}: ${a.change}`,
     ctaObj: 'Pick an objective',
@@ -1031,6 +1091,7 @@ const I18N = {
       lesson: {
         obj: 'The task at the destination failed, and that is where most of the mission science was.',
         test: 'The test failed the spacecraft before flight. At NASA, every trip back to the design costs time and money.',
+        window: 'Launching outside the window: the target was in the wrong place, and the trip burned the fuel that was missing at the end.',
         fuelChem: 'Fuel almost ran out. The chemical engine burns a lot; the electric (ion) engine saves fuel.',
         fuel: 'Fuel almost ran out. Every failed task on the way cost a little of it.',
         energy: 'Power was at the limit. Solar panels weaken far from the Sun; the nuclear generator does not.',
@@ -1209,6 +1270,12 @@ const SLOTS = [
   { k: 'inst', opts: [{ id: 'cam', cost: 10, mass: 4, use: 10, sci: 1 }, { id: 'kit', cost: 20, mass: 9, use: 20, sci: 2 }] }
 ];
 const BASE_MASS = 30, BASE_USE = 30, BASE_TIME = 30;           // capsule + structure, always there
+// launch windows on a simplified timeline (fraction of the axis): Mars ~26 months, Bennu ~6 years (synodic period), Moon ~27 days
+const WIN = {
+  estudar: { wins: [[0.12, 0.17], [0.55, 0.6]], wait: 8 },
+  amostras: { wins: [[0.11, 0.14], [0.87, 0.9]], wait: 12 },
+  recursos: { wins: [[0.09, 0.15], [0.39, 0.45], [0.69, 0.75]], wait: 2 }
+};
 const DEFAULT_BUILD = { energy: 'solar', prop: 'chem', shield: 'heavy', comms: 'small', inst: 'cam' };
 function buildStats(b = state.build || {}) {
   let cost = 0, mass = BASE_MASS, use = BASE_USE, cap = 100, time = BASE_TIME, sci = 0, chosen = 0;
@@ -1230,16 +1297,16 @@ function targetFor(i) {
   const s = state.stats || buildStats(DEFAULT_BUILD), b = state.build || DEFAULT_BUILD;
   const chem = b.prop !== 'ion', solar = b.energy !== 'rtg';
   const r = { fuel: 100, energy: Math.max(0, s.energyPct), mass: s.massPct, cost: s.points, time: s.timePct };
-  if (i >= 3) { r.cost -= 5; r.time += 10; }
+  if (i >= 3) { r.cost -= 5; r.time += 10 + (state.win === 'best' ? WIN[state.objective || 'amostras'].wait : 0); }
   if (i >= 4) { r.time += 5; }
-  if (i >= 5) { r.fuel -= chem ? 70 : 40; r.energy -= solar ? 25 : 10; r.time += 20; }
+  if (i >= 5) { r.fuel -= (chem ? 70 : 40) + (state.win === 'edge' ? 10 : state.win === 'now' ? 30 : 0); r.energy -= solar ? 25 : 10; r.time += 20; }
   if (i >= 6) { r.fuel -= 5; r.energy -= 10; r.time += 5; }
   for (const k of Object.keys(r)) r[k] = clamp(r[k], 0, k === 'mass' ? 200 : 100);
   return r;
 }
 
-// phase 2 (index 1) has three sub-steps: 'objective' -> 'map' -> 'confirmed'
-const state = { phase: 0, mode: 'checkpoint', userActed: false, sub: null, objPick: null, objective: null, pick: null, hover: null, base: null, build: null, stats: null, test: null, keepBuild: false, pen: {}, task: null, plan: [], log: [] };
+// phase 2 (index 1) has four sub-steps: 'objective' -> 'map' -> 'window' -> 'confirmed'
+const state = { phase: 0, mode: 'checkpoint', userActed: false, sub: null, objPick: null, objective: null, pick: null, hover: null, base: null, win: null, winPick: null, build: null, stats: null, test: null, keepBuild: false, pen: {}, task: null, plan: [], log: [] };
 const view = { alt: 0, thrust: 0, dy: 0, panels: 0, panelsTarget: 0, glow: 0, chute: 0, focus: false, land: false, shipA: 0 };
 const parts = { booster: true, stage2: true, fairing: true, sm: true };
 let debris = [];
@@ -1255,7 +1322,7 @@ const EVENTS = [
   { ph: 6, p: 0.00, run: () => { eject('sm'); } }
 ];
 const onMap = () => state.phase === 1 && state.sub === 'map';
-const onBrief = () => state.phase === 0 || (state.phase === 1 && state.sub === 'objective');
+const onBrief = () => state.phase === 0 || (state.phase === 1 && (state.sub === 'objective' || state.sub === 'window'));
 const shipShown = () => state.phase >= 2 || (state.phase === 1 && state.sub === 'confirmed');
 const onBuild = () => state.phase === 2;
 
@@ -1363,7 +1430,33 @@ function paintTip() {
   tipBox = { x: left, y: top, w: tw, h: th, side };
   tip.classList.add('show');
 }
+function buildWindow() {
+  $('alts').innerHTML = '';
+  const box = $('alts'), obj = state.objective || 'amostras', W = WIN[obj], ax = t('winAxis')[obj];
+  $('ovTitle').textContent = t('winTitle');
+  $('ovSub').textContent = t('winSub');
+  t('winOpts').forEach((o) => {
+    const el = document.createElement('button');
+    el.className = 'alt'; el.type = 'button'; el.dataset.id = o.id;
+    el.setAttribute('aria-pressed', String(state.winPick === o.id));
+    el.addEventListener('click', () => pickWindow(o.id));
+    el.innerHTML = `<div class="top"><span class="ic">${svg(o.icon)}</span><div><h3>${o.name}</h3></div></div>` +
+      `<p class="line change">${svg('plus')}<span>${o.pro}</span></p><p class="line risk">${svg('minus')}<span>${o.con}</span></p>`;
+    spotlight(el);
+    box.appendChild(el);
+  });
+  const w0 = W.wins[0], M = t('winMarks');
+  const at = { now: 0, edge: w0[0], best: (w0[0] + w0[1]) / 2 };
+  const risks = $('risks');
+  risks.hidden = false; risks.className = 'risks wtl';
+  risks.innerHTML = `<p class="w-why">${t('winWhy')[obj]}</p><div class="w-bar">` +
+    W.wins.map(([a, b]) => `<i class="w-win" style="left:${a * 100}%;width:${(b - a) * 100}%"></i>`).join('') +
+    Object.entries(at).map(([k, x]) => `<b class="w-mk ${k}" data-k="${k}" style="left:${x * 100}%"><span>${M[k]}</span></b>`).join('') +
+    `</div><div class="w-ax"><span>${ax[0]}</span><span class="w-lg"><i></i>${t('winLegend')}</span><span>${ax[1]}</span></div><p class="w-src">${t('winSrc')}</p>`;
+}
 function buildOverlay() {
+  if (state.phase === 1 && state.sub === 'window') { buildWindow(); return; }
+  $('risks').className = 'risks';
   const box = $('alts');
   box.innerHTML = '';
   const pick = state.phase === 1;
@@ -2334,7 +2427,7 @@ function missionReport() {
     [tries ? 'mid' : 'ok', R.test(tries), R.tag.test]
   ];
   const L = R.lesson;
-  const lesson = !objOk ? L.obj : tries ? L.test : fuel < 15 ? (b.prop !== 'ion' ? L.fuelChem : L.fuel) : energy < 15 ? L.energy
+  const lesson = !objOk ? L.obj : tries ? L.test : fuel < 15 ? (state.win === 'now' ? L.window : b.prop !== 'ion' ? L.fuelChem : L.fuel) : energy < 15 ? L.energy
     : sci < 3 ? L.sci : okN < done.length ? L.tasks : L.clean;
   const lead = lesson === L.clean ? '' : R.lead[grade === 'ok' ? 'better' : 'hurt'];
   return { grade, score, earned, rows, lesson: lead + lesson, titleText: R.title[grade] };
@@ -2449,7 +2542,11 @@ function paintLayers() {
   }
   overlayKey = key;
   $('build').hidden = !bld;
-  if (brief && state.phase === 1) $('alts').querySelectorAll('button.alt').forEach((b, i) => b.setAttribute('aria-pressed', String(t('alts')[i].id === state.objPick)));
+  if (brief && state.phase === 1 && state.sub === 'objective') $('alts').querySelectorAll('button.alt').forEach((b, i) => b.setAttribute('aria-pressed', String(t('alts')[i].id === state.objPick)));
+  if (brief && state.phase === 1 && state.sub === 'window') {
+    $('alts').querySelectorAll('button.alt').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === state.winPick)));
+    $('risks').querySelectorAll('.w-mk').forEach((m) => m.classList.toggle('on', m.dataset.k === state.winPick));
+  }
   $('overlay').hidden = !brief;
   $('mapLayer').hidden = !map;
   $('sceneBox').classList.toggle('map', map);
@@ -2483,6 +2580,10 @@ function paintCard() {
     } else if (state.sub === 'map') {
       if (state.pick) { text = t('basePicked')(bases[state.pick]); cta = t('ctaConfirm'); }
       else { text = t('mapText'); cta = t('ctaPick'); disabled = true; }
+    } else if (state.sub === 'window') {
+      const o = t('winOpts').find((x) => x.id === state.winPick);
+      if (o) { text = t('winPicked')(o); cta = t('ctaWinOk'); }
+      else { text = t('winText'); cta = t('ctaWin'); disabled = true; }
     } else text = t('baseChosen')(bases[state.base]);
   }
   if (state.phase === 5 && atCheckpoint) text = t('arriveObj')[state.objective || 'amostras'];
@@ -2561,7 +2662,7 @@ function enterPhase(i) {
   state.phase = i;
   view.ops = 0;
   const tr = TRAVEL[i];
-  if (i === 1) { state.sub = 'objective'; state.objPick = null; state.objective = null; state.pick = null; state.base = null; }
+  if (i === 1) { state.sub = 'objective'; state.objPick = null; state.objective = null; state.pick = null; state.base = null; state.win = null; state.winPick = null; }
   if (i === 2) {
     if (!state.keepBuild) state.build = {};                     // coming back from a failed test keeps the build to fix it
     state.keepBuild = false; state.stats = null; state.test = null;
@@ -2602,6 +2703,11 @@ function pickObjective(id) {
   state.objPick = id;
   paintCard();
 }
+function pickWindow(id) {
+  if (!(state.phase === 1 && state.sub === 'window')) return;
+  state.winPick = id;
+  paintCard();
+}
 function pickBase(id) {
   if (!onMap()) return;
   state.pick = id;
@@ -2620,6 +2726,7 @@ function jump(i) {
   scenePreset(i);
   state.base = i >= 2 ? (state.base || 'kennedy') : null;   // jumping ahead in dev mode uses Kennedy
   state.objective = i >= 2 ? (state.objective || 'amostras') : null;
+  state.win = i >= 2 ? (state.win || 'best') : null; state.winPick = null;
   state.sub = null; state.pick = null; state.objPick = null; state.hover = null;
   if (i >= 3) {                                                 // jumping past the build in dev mode uses a default build
     if (!state.build || buildStats(state.build).missing) state.build = { ...DEFAULT_BUILD };
@@ -2646,8 +2753,15 @@ function advance() {
   }
   if (onMap()) {
     if (!state.pick) return;
-    state.base = state.pick; state.sub = 'confirmed'; state.hover = null;
+    state.base = state.pick; state.sub = 'window'; state.hover = null; state.winPick = null;
     toast(t('toastBase')(t('bases')[state.base]));
+    paintCard();
+    return;
+  }
+  if (state.phase === 1 && state.sub === 'window') {
+    if (!state.winPick) return;
+    state.win = state.winPick; state.sub = 'confirmed';
+    toast(t('toastWin')(t('winOpts').find((o) => o.id === state.win)));
     paintCard();
     return;
   }

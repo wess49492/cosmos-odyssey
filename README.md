@@ -9,7 +9,7 @@ A browser game for the **NASA Space Apps Challenge 2026**, challenge **Space Mis
 Students rarely live a whole space mission, so engineering trade-offs stay abstract. In Cosmos Odyssey you plan, build, launch and bring a spacecraft home with limited resources, following the 7 phases of the NASA project life cycle:
 
 1. **Concept studies:** compare real mission alternatives (OSIRIS-REx, Perseverance, a future resource mission).
-2. **Concept development:** choose the objective and the launch site (Kennedy, Vandenberg or Wallops).
+2. **Concept development:** choose the objective, the launch site (Kennedy, Vandenberg or Wallops) and the launch date inside the launch window (Mars about every 26 months, asteroid Bennu about every 6 years, the Moon almost every month).
 3. **Preliminary design:** build the spacecraft with science points; every part is a trade-off.
 4. **Final design and fabrication:** assemble the rocket and tune the parameters.
 5. **Assembly, integration and test:** the requirements decide if the test flight passes.
@@ -23,6 +23,7 @@ English and Portuguese (EN / PT button). Everything runs in a single `index.html
 - NASA Systems Engineering Handbook and NASA project life cycle (Pre-Phase A to Phase F).
 - Concept Maturity Levels (JPL) and NASA's Mission Design Lab: phases 1 to 3 show how mature your concept is (CML 1-2, 3 and 4) and the matching MDL study (Office Hours and Concept Development, Trade Study, Point Design); each spacecraft row is one MDL discipline (power, propulsion, thermal, communications, science payload).
 - NASA mission pages: OSIRIS-REx, Mars 2020 Perseverance (and MOXIE), LCROSS, Psyche.
+- GMAT, NASA's General Mission Analysis Tool (challenge resource): the launch-window step is a simplified version of its launch-window analysis.
 - A Learning Game About Telescopes (challenge resource): the idea of ending by comparing the player's design with real missions.
 
 Numbers in the game are simplified for learning; the crew characters are fictional.
