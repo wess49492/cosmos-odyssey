@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* phones: the game is laid out for a computer screen, so phones get the desktop layout scaled down (landscape) */
+var PHONE = Math.min(screen.width, screen.height) < 700;
+document.write(PHONE ? '<meta name="viewport" content="width=1280">' : '<meta name="viewport" content="width=device-width, initial-scale=1">');
+if (PHONE) document.documentElement.classList.add('phone');</script>
 <meta name="color-scheme" content="dark">
 <meta name="description" content="Cosmos Odyssey: a NASA mission design game by Team Capella Stars, NASA Space Apps Challenge 2026.">
 <meta name="author" content="Team Capella Stars">
@@ -235,6 +238,13 @@ button.alt[aria-pressed="true"]::before { content: ""; position: absolute; inset
   background: linear-gradient(160deg, #e3e6eb, #b9bfc8 60%, #a7aeb8); box-shadow: inset 0 2px 0 rgba(255, 255, 255, .7), inset 0 -4px 0 rgba(0, 0, 0, .18), 0 24px 60px rgba(0, 0, 0, .55);
   transform: translate(-50%, -50%); animation: slam .5s var(--ease); }
 .alert[hidden] { display: none; }
+.rotate { display: none; }
+@media (orientation: portrait) {
+  html.phone .rotate { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4vw; padding: 8vw; background: #040a1c; text-align: center; }
+  html.phone .rotate svg { width: 28vw; height: 28vw; fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; animation: rot 2.4s ease-in-out infinite; }
+  html.phone .rotate p { margin: 0; font: 700 6.5vw/1.25 var(--game); letter-spacing: .02em; color: var(--text); }
+}
+@keyframes rot { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
 .lineup { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 56px 24px 14px;
   background: radial-gradient(70% 60% at 50% 55%, rgba(61, 139, 255, .22), transparent 70%), linear-gradient(180deg, rgba(3, 6, 14, .9), rgba(3, 6, 14, .72)); }
 .lineup[hidden] { display: none; }
@@ -507,6 +517,7 @@ button.primary:disabled::after { display: none; }
 </style>
 </head>
 <body>
+<div class="rotate" id="rotate" aria-live="polite"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/><path d="M20.5 9.5a8.5 8.5 0 0 1-3 7.5M18 17l-.6.1.1-.6"/></svg><p id="rotTxt">Turn your phone sideways to play</p></div>
 <div class="ts" id="ts" role="dialog" aria-label="Cosmos Odyssey">
   <div class="lang ts-lang" role="group"><button type="button" data-l="en">EN</button><button type="button" data-l="pt-BR">PT</button></div>
   <canvas id="tsCv" aria-hidden="true"></canvas>
@@ -726,6 +737,7 @@ const I18N = {
     lineSub: 'Os quatro embarcam na nave que você projetou.',
     lineCard: 'Teste aprovado. Wiseman, Glover, Koch e Hansen vestiram os trajes e seguem para a plataforma.',
     ctaBoard: 'Embarcar e lançar',
+    rotate: 'Gire o celular para jogar',
     objText: 'Agora é com você. Escolha o objetivo da missão nos cartões acima.',
     objPicked: (a) => `${a.name}: ${a.change}`,
     ctaObj: 'Escolha um objetivo',
@@ -1047,6 +1059,7 @@ const I18N = {
     lineSub: 'The four of them board the spacecraft you designed.',
     lineCard: 'Test passed. Wiseman, Glover, Koch and Hansen are suited up and heading to the pad.',
     ctaBoard: 'Board and launch',
+    rotate: 'Turn your phone sideways to play',
     objText: 'Now it is up to you. Pick the mission objective on the cards above.',
     objPicked: (a) => `${a.name}: ${a.change}`,
     ctaObj: 'Pick an objective',
@@ -2723,6 +2736,7 @@ function paintCard() {
   paintAlert();
 }
 function buildAll() {
+  $('rotTxt').textContent = t('rotate');
   document.documentElement.lang = lang === 'pt-BR' ? 'pt-BR' : 'en';
   document.title = t('title');
   $('brand').textContent = t('brand');
