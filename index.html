@@ -3783,7 +3783,7 @@ function drawTitle(now) {
   if (ts.classList.contains('gone')) return;
   tsT += Math.min(0.05, (now - tsLast) / 1000); tsLast = now;
   const dpr = Math.min(devicePixelRatio || 1, 2), w = tsCv.clientWidth, h = tsCv.clientHeight;
-  if (tsCv.width !== Math.round(w * dpr)) { tsCv.width = Math.round(w * dpr); tsCv.height = Math.round(h * dpr); }
+  if (tsCv.width !== Math.round(w * dpr) || tsCv.height !== Math.round(h * dpr)) { tsCv.width = Math.round(w * dpr); tsCv.height = Math.round(h * dpr); }
   const g = tsCtx; g.setTransform(dpr, 0, 0, dpr, 0, 0);
   const bg = g.createRadialGradient(w * 0.5, h * 0.4, 0, w * 0.5, h * 0.4, Math.max(w, h) * 0.8);
   bg.addColorStop(0, '#0d2250'); bg.addColorStop(0.55, '#06112b'); bg.addColorStop(1, '#030816');
