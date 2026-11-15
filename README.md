@@ -25,4 +25,12 @@ English and Portuguese (EN / PT button). Everything runs in a single `index.html
 
 Numbers in the game are simplified for learning; the crew characters are fictional.
 
+## Use of AI
+The game idea and every design decision came from our team. We used AI tools as follows:
+- **Code and texts:** most of the code (HTML, CSS, JavaScript), the in-game texts and the English translation were written with the help of an AI coding assistant (Claude, by Anthropic), following our specifications. We reviewed and tested everything.
+- **Research:** Google Gemini gave us a first summary of NASA mission-process pages, which we checked against the NASA Systems Engineering Handbook.
+- **No AI-generated images, audio or video** are used in the game or in the pitch.
+
+The same notice is in the `ai-assistance` meta tag at the top of `index.html`.
+
 *Per aspera ad astra.*
