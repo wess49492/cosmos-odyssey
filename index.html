@@ -408,6 +408,7 @@ button.alt[aria-pressed="true"]::before { content: ""; position: absolute; inset
 .card h1 .step { color: var(--accent); }
 .card p { margin: 5px 0 0; max-width: 78ch; color: var(--body); text-wrap: pretty; }
 .card .note { font-size: 13px; color: var(--muted); }
+.card .note .cml { display: inline-block; margin-right: 8px; padding: 1px 8px; border: 1px solid rgba(255,154,36,.55); border-radius: 999px; color: var(--accent); font: 700 11px/1.5 var(--game); letter-spacing: .06em; vertical-align: 1px; }
 .card.swap .text { animation: swap .45s var(--ease); }
 @keyframes swap { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .actions { display: flex; align-items: center; gap: 10px; }
@@ -628,6 +629,14 @@ const I18N = {
     ctaConfirm: 'Confirmar base',
     toastBase: (b) => `Base confirmada: ${b.name}`,
     pro: 'Vantagem', con: 'Desvantagem',
+    // Concept Maturity Levels (JPL) and NASA Mission Design Lab study levels: official challenge resources, mapped in a simplified way
+    matSrc: 'Concept Maturity Levels (JPL) e Mission Design Lab (NASA), recursos oficiais do desafio. Correspondência simplificada.',
+    mat: [
+      ['CML 1–2', 'Maturidade do conceito (JPL): da ideia à viabilidade. No Mission Design Lab da NASA, isto é o Office Hours e o Concept Development: levantar os grandes desafios e riscos.'],
+      ['CML 3', 'Espaço de trocas: comparar objetivos e bases antes de escolher. No Mission Design Lab, isto é um Trade Study.'],
+      ['CML 4', 'Projeto pontual: peças, massa, energia e custo fechados. No Mission Design Lab, isto é o Point Design, a última parada antes do projeto formal.']
+    ],
+    buildMdl: 'Cada linha é uma disciplina que o Mission Design Lab da NASA analisa: energia, propulsão, térmica, comunicação e carga científica.',
     buildTitle: 'Monte a nave',
     buildSub: 'Uma peça por linha. Os pontos de ciência pagam as peças, e cada escolha muda os recursos na hora.',
     slots: {
@@ -894,6 +903,13 @@ const I18N = {
     ctaConfirm: 'Confirm site',
     toastBase: (b) => `Site confirmed: ${b.name}`,
     pro: 'Advantage', con: 'Drawback',
+    matSrc: 'Concept Maturity Levels (JPL) and Mission Design Lab (NASA), official challenge resources. Simplified mapping.',
+    mat: [
+      ['CML 1–2', "Concept maturity (JPL): from idea to feasibility. At NASA's Mission Design Lab this is Office Hours and Concept Development: spot the big challenges and risks."],
+      ['CML 3', 'Trade space: compare objectives and launch sites before choosing. At the Mission Design Lab this is a Trade Study.'],
+      ['CML 4', 'Point design: parts, mass, power and cost locked in. At the Mission Design Lab this is the Point Design, the last stop before the formal project.']
+    ],
+    buildMdl: "Each row is one discipline NASA's Mission Design Lab analyzes: power, propulsion, thermal, communications and the science payload.",
     buildTitle: 'Build the spacecraft',
     buildSub: 'One part per row. Science points pay for the parts, and every choice changes the resources right away.',
     slots: {
@@ -2189,7 +2205,7 @@ const GAMES = {
 
 function buildBuild() {
   $('bTitle').textContent = t('buildTitle');
-  $('bSub').textContent = t('buildSub');
+  $('bSub').textContent = t('buildSub') + ' ' + t('buildMdl');
   const box = $('slots'), ui = t('slots');
   box.innerHTML = '';
   SLOTS.forEach((s) => {
@@ -2386,13 +2402,12 @@ function paintCard() {
   const atCheckpoint = !moving && p.arrive;
   let text = atCheckpoint ? p.arrive : p.text;
   let cta = moving ? p.moving : p.cta;
-  let note = moving ? '' : t('note');
+  let note = '';
   let disabled = moving;
   if (state.phase === 0) note = '';
   if (state.phase === 1) {
     const bases = t('bases');
     const alt = (id) => t('alts').find((a) => a.id === id);
-    note = t('ruleNote');
     if (state.sub === 'objective') {
       if (state.objPick) { text = t('objPicked')(alt(state.objPick)); cta = t('ctaObjOk'); }
       else { text = t('objText'); cta = t('ctaObj'); disabled = true; }
@@ -2410,14 +2425,12 @@ function paintCard() {
   if (state.phase === 3 && state.fab) {
     const f = state.fab, L = t('tasks'), i = f.res.length;
     const marks = FAB.map((id, k) => `${k < i ? (f.res[k] ? '✓' : '✗') : '○'} ${L[id].title}`).join(' · ');
-    note = t('ruleNote');
     if (i < FAB.length) { text = `${t('fabIntro')} ${marks}`; cta = t('fabNext')(L[FAB[i]].title); }
     else text = `${t('fabDone')(f.bad)} ${marks}`;
     if (state.task) disabled = true;
   }
   if (state.phase === 2) {
     const s = buildStats();
-    note = t('ruleNote');
     if (s.missing) { text = t('buildTodo')(s.missing); cta = t('ctaTodo')(s.missing); disabled = true; }
     else if (s.points < 0) { text = t('buildBroke'); cta = t('ctaBroke'); disabled = true; }
     else { text = t('buildOk')(s) + (s.massPct > 100 ? t('warnMass') : '') + (s.energyPct < 0 ? t('warnEnergy') : ''); cta = t('ctaPDR'); }
@@ -2430,7 +2443,10 @@ function paintCard() {
   $('cardStep').textContent = t('phaseOf')(state.phase);
   if (changed) decrypt($('cardTitle'), p.title); else $('cardTitle').textContent = p.title;
   $('cardText').textContent = text;
-  $('cardNote').textContent = note;
+  const mat = state.phase < 3 && !state.failed ? t('mat')[state.phase] : null;
+  const nEl = $('cardNote');
+  if (mat) { nEl.innerHTML = `<b class="cml">${mat[0]}</b>${mat[1]}`; nEl.title = t('matSrc'); }
+  else { nEl.textContent = note; nEl.removeAttribute('title'); }
   const btn = $('cta');
   btn.textContent = cta;
   btn.disabled = disabled;

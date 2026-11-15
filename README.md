@@ -21,6 +21,7 @@ English and Portuguese (EN / PT button). Everything runs in a single `index.html
 ## NASA resources used
 - Design and Develop Science Missions (official challenge resource).
 - NASA Systems Engineering Handbook and NASA project life cycle (Pre-Phase A to Phase F).
+- Concept Maturity Levels (JPL) and NASA's Mission Design Lab: phases 1 to 3 show how mature your concept is (CML 1-2, 3 and 4) and the matching MDL study (Office Hours and Concept Development, Trade Study, Point Design); each spacecraft row is one MDL discipline (power, propulsion, thermal, communications, science payload).
 - NASA mission pages: OSIRIS-REx, Mars 2020 Perseverance (and MOXIE), LCROSS, Psyche.
 
 Numbers in the game are simplified for learning; the crew characters are fictional.
