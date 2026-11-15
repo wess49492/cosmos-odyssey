@@ -2,6 +2,8 @@
 
 **Play it here: https://wess49492.github.io/cosmos-odyssey/** (runs in the browser, no install).
 
+**Pitch (7 slides, PDF): https://wess49492.github.io/cosmos-odyssey/cosmos-odyssey-pitch.pdf**
+
 A browser game for the **NASA Space Apps Challenge 2026**, challenge **Space Mission Design Game**, by **Team Capella Stars** (Recife, Brazil).
 
 Students rarely live a whole space mission, so engineering trade-offs stay abstract. In Cosmos Odyssey you plan, build, launch and bring a spacecraft home with limited resources, following the 7 phases of the NASA project life cycle:
