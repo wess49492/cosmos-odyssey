@@ -248,6 +248,13 @@ button.alt[aria-pressed="true"]::before { content: ""; position: absolute; inset
 .lu-row figcaption b { font: 700 15px var(--game); letter-spacing: .06em; text-transform: uppercase; }
 .lu-row figcaption span { font-size: 12px; color: var(--muted); }
 .lu-ai { margin: 0; font-size: 11.5px; color: var(--muted); }
+.lineup.home .lu-row figure { animation-name: luHop; }
+.lineup.home.sad .lu-row figure { animation-name: luIn; }
+.lineup.home .lu-row img { animation: luBob 2.6s ease-in-out calc(var(--d) + .8s) infinite; }
+.lineup.home.sad .lu-row img { animation: none; filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .55)) saturate(.75); }
+@keyframes luHop { 0% { opacity: 0; transform: translateY(30px); } 55% { opacity: 1; transform: translateY(-14px); } 100% { transform: none; } }
+@keyframes luBob { 0%, 100% { transform: none; } 50% { transform: translateY(-6px); } }
+@media (prefers-reduced-motion: reduce) { .lineup.home .lu-row img { animation: none; } }
 @keyframes luIn { from { opacity: 0; transform: translateY(24px) scale(.96); } }
 @media (prefers-reduced-motion: reduce) { .lu-row figure { animation: none; } }
 .alert.rep { width: min(900px, calc(100% - 40px)); }
@@ -708,6 +715,12 @@ const I18N = {
     ctaWin: 'Escolha uma data',
     ctaWinOk: 'Confirmar data',
     toastWin: (o) => `Data de lançamento: ${o.name}`,
+    // full names for the line-ups (Artemis II crew)
+    crewFull: { caio: ['Reid Wiseman', 'Comandante', 'NASA'], davi: ['Victor Glover', 'Piloto', 'NASA'], nara: ['Christina Koch', 'Especialista de missão', 'NASA'], tomas: ['Jeremy Hansen', 'Especialista de missão', 'CSA'] },
+    homeT: { ok: 'De volta para casa', mid: 'De volta para casa', bad: 'De volta, mas sem o objetivo' },
+    homeSub: { ok: 'A tripulação pousou em segurança e a missão foi cumprida.', mid: 'A tripulação pousou em segurança. Parte do plano ficou pelo caminho.', bad: 'A tripulação está a salvo, mas a missão não trouxe o que prometeu.' },
+    homeCard: { ok: 'Pouso confirmado! Wiseman, Glover, Koch e Hansen saíram da cápsula. Agora, o relatório da missão.', mid: 'Pouso confirmado. A tripulação está bem; veja no relatório o que faltou.', bad: 'Pouso confirmado. A tripulação está a salvo; veja no relatório o que deu errado.' },
+    ctaReport: 'Ver relatório da missão',
     // crew line-up before launch (full-body stickers)
     lineT: 'Tripulação pronta para o lançamento',
     lineSub: 'Os quatro embarcam na nave que você projetou.',
@@ -1026,6 +1039,11 @@ const I18N = {
     ctaWin: 'Choose a date',
     ctaWinOk: 'Confirm date',
     toastWin: (o) => `Launch date: ${o.name}`,
+    crewFull: { caio: ['Reid Wiseman', 'Commander', 'NASA'], davi: ['Victor Glover', 'Pilot', 'NASA'], nara: ['Christina Koch', 'Mission specialist', 'NASA'], tomas: ['Jeremy Hansen', 'Mission specialist', 'CSA'] },
+    homeT: { ok: 'Welcome home', mid: 'Welcome home', bad: 'Home, but without the objective' },
+    homeSub: { ok: 'The crew landed safely and the mission was accomplished.', mid: 'The crew landed safely. Part of the plan was lost on the way.', bad: 'The crew is safe, but the mission did not bring back what it promised.' },
+    homeCard: { ok: 'Touchdown confirmed! Wiseman, Glover, Koch and Hansen are out of the capsule. Now, the mission report.', mid: 'Touchdown confirmed. The crew is fine; the report shows what was missing.', bad: 'Touchdown confirmed. The crew is safe; the report shows what went wrong.' },
+    ctaReport: 'See mission report',
     lineT: 'Crew ready for launch',
     lineSub: 'The four of them board the spacecraft you designed.',
     lineAi: 'AI-generated caricatures, a tribute to the Artemis II crew. Lines invented for the game.',
@@ -2517,18 +2535,26 @@ function twinHTML(b, objId) {
   return `<div class="twin"><p class="tw-h">${T.t}</p><p class="tw-n"><b>${x.m.name}</b><span>${x.m.who}</span></p><p class="tw-f">${T.m[x.m.id]}</p>` +
     `<p class="tw-c">${x.same.length ? `<i class="ok">${T.like}:</i> ${x.same.map(P).join(', ')}.` : ''}${x.diff.length ? ` <i class="dif">${T.diff}:</i> ${x.diff.map(P).join(', ')}.` : ''}</p></div>`;
 }
-function onReport() { return state.phase === 6 && state.mode === 'checkpoint' && !state.task && !state.failed; }
+function landed() { return state.phase === 6 && state.mode === 'checkpoint' && !state.task && !state.failed; }
+function onHome() { return landed() && !state.home; }
+function onReport() { return landed() && !!state.home; }
 function paintLineup() {
-  const el = $('lineup'), on = state.phase === 4 && !!state.lineup && !state.failed;
-  if (!on) { el.hidden = true; el.dataset.lang = ''; return; }
-  if (!el.hidden && el.dataset.lang === lang) return;              // already built in this language
-  el.dataset.lang = lang; el.hidden = false;
-  $('luT').textContent = t('lineT'); $('luSub').textContent = t('lineSub'); $('luAi').textContent = t('lineAi');
-  $('luRow').innerHTML = CREW.map((c, i) => { const [nm, role] = t('crew')[c.id];
-    return `<figure style="--d:${i * 0.09}s"><img src="${CREW_BODY[c.id]}" alt="${nm}, ${role}"><figcaption><b>${nm}</b><span>${role}</span></figcaption></figure>`; }).join('');
+  const el = $('lineup'), home = onHome(), on = home || (state.phase === 4 && !!state.lineup && !state.failed);
+  if (!on) { el.hidden = true; el.dataset.k = ''; return; }
+  const g = home ? missionReport().grade : '', k = lang + (home ? 'home' + g : 'launch');
+  if (!el.hidden && el.dataset.k === k) return;                    // already built for this screen and language
+  el.dataset.k = k; el.hidden = false;
+  if (home) $('tlist').hidden = true;                             // the line-up covers the scene, like the report
+  el.classList.toggle('home', home); el.classList.toggle('sad', home && g === 'bad');
+  $('luT').textContent = home ? t('homeT')[g] : t('lineT');
+  $('luSub').textContent = home ? t('homeSub')[g] : t('lineSub');
+  $('luAi').textContent = t('lineAi');
+  $('luRow').innerHTML = CREW.map((c, i) => { const [nm, role, ag] = t('crewFull')[c.id];
+    return `<figure style="--d:${i * 0.09}s"><img src="${CREW_BODY[c.id]}" alt="${nm}, ${role}, ${ag}"><figcaption><b>${nm}</b><span>${role} · ${ag}</span></figcaption></figure>`; }).join('');
 }
 function paintAlert() {
   const el = $('alert');
+  paintLineup();
   el.classList.toggle('rep', onReport());
   if (onReport()) {
     const r = missionReport(), R = t('rep');
@@ -2547,7 +2573,6 @@ function paintAlert() {
       `</ul><p class="why">${t('mFailWhy')(MAX_FAIL)}</p>`;
     return;
   }
-  paintLineup();
   const show = state.phase === 4 && state.mode === 'checkpoint' && !!state.test && !state.lineup;
   el.hidden = !show;
   if (!show) return;
@@ -2675,9 +2700,10 @@ function paintCard() {
     else if (s.points < 0) { text = t('buildBroke'); cta = t('ctaBroke'); disabled = true; }
     else { text = t('buildOk')(s) + (s.massPct > 100 ? t('warnMass') : '') + (s.energyPct < 0 ? t('warnEnergy') : ''); cta = t('ctaPDR'); }
   }
+  if (onHome()) { text = t('homeCard')[missionReport().grade]; cta = t('ctaReport'); note = ''; }
   if (onReport()) { text = t('rep').card(missionReport()); note = ''; }
   if (state.failed) { text = t('mFailCard'); cta = t('ctaRestart'); disabled = false; note = ''; }
-  const key = `${state.phase}|${state.sub}|${state.mode}|${!!state.failed}|${!!state.lineup}`;
+  const key = `${state.phase}|${state.sub}|${state.mode}|${!!state.failed}|${!!state.lineup}|${!!state.home}`;
   const changed = key !== cardKey;
   cardKey = key;
   $('cardStep').textContent = t('phaseOf')(state.phase);
@@ -2730,7 +2756,7 @@ function setRes(obj) { Object.assign(res, obj); resTween = null; }
 
 function enterPhase(i) {
   state.phase = i;
-  state.lineup = false;
+  state.lineup = false; state.home = false;
   view.ops = 0;
   const tr = TRAVEL[i];
   if (i === 1) { state.sub = 'objective'; state.objPick = null; state.objective = null; state.pick = null; state.base = null; state.win = null; state.winPick = null; }
@@ -2853,6 +2879,7 @@ function advance() {
     enterPhase(2);
     return;
   }
+  if (onHome()) { state.home = true; paintCard(); return; }     // crew back home, then the report
   if (state.phase === 4 && state.test && state.test.ok && !state.lineup) {   // crew line-up before the launch
     state.lineup = true; paintCard(); return;
   }
