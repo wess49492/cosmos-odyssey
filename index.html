@@ -315,7 +315,7 @@ button.alt[aria-pressed="true"]::before { content: ""; position: absolute; inset
 .intro .sci .primary { justify-self: start; margin-top: 4px; }
 
 /* crew task list, top left (Among Us style) */
-.tlist { position: absolute; left: 140px; top: 18px; z-index: 3; width: 238px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(5, 10, 22, .84); }
+.tlist { position: absolute; left: 140px; top: 18px; z-index: 2; width: 238px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(5, 10, 22, .84); }
 .tlist[hidden] { display: none; }
 .tlist h3 { margin: 0 0 6px; font: 700 12px var(--game); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
 .tlist ul { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 4px; }
@@ -513,6 +513,15 @@ button.primary:disabled::after { display: none; }
   .proc { padding-top: 8px; gap: 4px; }
   .proc ol { gap: 1px; }
   .proc li { font-size: 12px; }
+}
+
+/* very short screens (phone in landscape): the task window must fit the scene */
+@media (max-height: 700px) {
+  .task { max-height: calc(100% - 12px); overflow-y: auto; padding: 10px 14px; }
+  .task h2 { font-size: 16px; }
+  .task .ins { margin: 3px 0 6px; font-size: 12.5px; line-height: 1.35; }
+  .task .timer { margin-bottom: 6px; }
+  .task .out { margin-top: 6px; font-size: 12.5px; }
 }
 </style>
 </head>
