@@ -543,7 +543,7 @@ button.primary:disabled::after { display: none; }
       <aside class="reqs" id="reqs"></aside>
     </div>
     <div class="alert" id="alert" role="alertdialog" aria-live="assertive" hidden></div>
-    <div class="lineup" id="lineup" hidden><div class="lu-head"><h2 id="luT"></h2><p id="luSub"></p></div><div class="lu-row" id="luRow"></div><p class="lu-ai" id="luAi"></p></div>
+    <div class="lineup" id="lineup" hidden><div class="lu-head"><h2 id="luT"></h2><p id="luSub"></p></div><div class="lu-row" id="luRow"></div></div>
     <div class="task" id="task" role="dialog" aria-labelledby="taskTitle" hidden></div>
     <div class="crew" id="crew" hidden></div>
     <div class="tlist" id="tlist" hidden></div>
@@ -724,7 +724,6 @@ const I18N = {
     // crew line-up before launch (full-body stickers)
     lineT: 'Tripulação pronta para o lançamento',
     lineSub: 'Os quatro embarcam na nave que você projetou.',
-    lineAi: 'Caricaturas geradas por IA, em homenagem à tripulação da Artemis II. Falas inventadas para o jogo.',
     lineCard: 'Teste aprovado. Wiseman, Glover, Koch e Hansen vestiram os trajes e seguem para a plataforma.',
     ctaBoard: 'Embarcar e lançar',
     objText: 'Agora é com você. Escolha o objetivo da missão nos cartões acima.',
@@ -1046,7 +1045,6 @@ const I18N = {
     ctaReport: 'See mission report',
     lineT: 'Crew ready for launch',
     lineSub: 'The four of them board the spacecraft you designed.',
-    lineAi: 'AI-generated caricatures, a tribute to the Artemis II crew. Lines invented for the game.',
     lineCard: 'Test passed. Wiseman, Glover, Koch and Hansen are suited up and heading to the pad.',
     ctaBoard: 'Board and launch',
     objText: 'Now it is up to you. Pick the mission objective on the cards above.',
@@ -2548,7 +2546,6 @@ function paintLineup() {
   el.classList.toggle('home', home); el.classList.toggle('sad', home && g === 'bad');
   $('luT').textContent = home ? t('homeT')[g] : t('lineT');
   $('luSub').textContent = home ? t('homeSub')[g] : t('lineSub');
-  $('luAi').textContent = t('lineAi');
   $('luRow').innerHTML = CREW.map((c, i) => { const [nm, role, ag] = t('crewFull')[c.id];
     return `<figure style="--d:${i * 0.09}s"><img src="${CREW_BODY[c.id]}" alt="${nm}, ${role}, ${ag}"><figcaption><b>${nm}</b><span>${role} · ${ag}</span></figcaption></figure>`; }).join('');
 }
