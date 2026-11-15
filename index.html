@@ -5,7 +5,19 @@
 <script>/* phones: the game is laid out for a computer screen, so phones get the desktop layout scaled down (landscape) */
 var SM = Math.min(screen.width, screen.height), PHONE = SM > 0 && SM < 700 && matchMedia('(pointer: coarse)').matches;   // touch screen, small side under 700 px
 document.write(PHONE ? '<meta name="viewport" content="width=1280">' : '<meta name="viewport" content="width=device-width, initial-scale=1">');
-if (PHONE) document.documentElement.classList.add('phone');</script>
+if (PHONE) {
+  document.documentElement.classList.add('phone');
+  // the layout fits without scrolling from 840 px of height, so phones get a virtual page 840 px tall with the screen's own proportion:
+  // everything is drawn a bit smaller, but whole (Wes, 2026-11-15: smaller and fitting beats looking broken)
+  var fitPhone = function () {
+    if (!innerWidth || !innerHeight) return;
+    var r = innerWidth / innerHeight, w = r > 1 ? Math.max(1280, Math.round(840 * r)) : 1280, m = document.querySelector('meta[name=viewport]');
+    if (m && m.getAttribute('content') !== 'width=' + w) m.setAttribute('content', 'width=' + w);
+  };
+  fitPhone();
+  addEventListener('resize', fitPhone);
+  addEventListener('orientationchange', function () { setTimeout(fitPhone, 250); });
+}</script>
 <meta name="color-scheme" content="dark">
 <meta name="description" content="Cosmos Odyssey: a NASA mission design game by Team Capella Stars, NASA Space Apps Challenge 2026.">
 <meta name="author" content="Team Capella Stars">
