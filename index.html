@@ -218,6 +218,11 @@ button.alt[aria-pressed="true"]::before { content: ""; position: absolute; inset
   background: linear-gradient(160deg, #e3e6eb, #b9bfc8 60%, #a7aeb8); box-shadow: inset 0 2px 0 rgba(255, 255, 255, .7), inset 0 -4px 0 rgba(0, 0, 0, .18), 0 24px 60px rgba(0, 0, 0, .55);
   transform: translate(-50%, -50%); animation: slam .5s var(--ease); }
 .alert[hidden] { display: none; }
+.alert.rep { width: min(900px, calc(100% - 40px)); }
+.alert.rep .score span { margin-left: 16px; }
+.alert .rep-g { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.alert .rep-g .why { margin-top: 0; }
+@media (max-width: 760px) { .alert .rep-g { grid-template-columns: 1fr; gap: 0; } .alert .rep-g .why { margin-top: 12px; } }
 @keyframes slam { from { transform: translate(-50%, -62%) scale(.96); } }
 .alert .badge { position: absolute; left: -26px; top: -30px; width: 116px; height: 116px; }
 .alert h2 { margin: 0 0 10px; font: 700 21px/1.15 var(--game); letter-spacing: .03em; text-transform: uppercase; }
@@ -230,6 +235,11 @@ button.alt[aria-pressed="true"]::before { content: ""; position: absolute; inset
 .alert .score span { margin-left: auto; padding: 4px 10px; border-radius: 999px; background: #15306b; color: #fff; font: 700 12px var(--game); letter-spacing: .04em; }
 .alert li em { padding: 2px 7px; border-radius: 5px; background: rgba(16, 21, 31, .1); font: 600 10.5px var(--game); font-style: normal; letter-spacing: .05em; text-transform: uppercase; color: #3a4252; }
 .alert .why { margin: 12px 0 0; font-size: 13px; line-height: 1.45; color: #2a3140; }
+.alert .twin { margin: 12px 0 0; padding: 10px 12px; border-radius: 10px; background: #eaf0fb; border: 1px solid #c9d6ee; }
+.alert .twin p { margin: 0; font-size: 12.5px; line-height: 1.4; color: #2a3140; }
+.alert .twin .tw-h { font: 700 10.5px var(--game); letter-spacing: .08em; text-transform: uppercase; color: #15306b; }
+.alert .twin .tw-n { display: flex; align-items: baseline; gap: 8px; margin-top: 2px; } .alert .twin .tw-n b { font: 700 16px var(--game); color: #10151f; } .alert .twin .tw-n span { font: 600 11px var(--game); color: #5a6372; }
+.alert .twin .tw-c { margin-top: 4px; } .alert .twin i { font-style: normal; font-weight: 700; } .alert .twin i.ok { color: #15803d; } .alert .twin i.dif { color: #b45309; }
 
 /* crew on the right side, with speech bubbles */
 .crew { position: absolute; right: 16px; top: 56px; z-index: 4; display: grid; gap: 8px; justify-items: end; pointer-events: none; }
@@ -741,6 +751,22 @@ const I18N = {
         tasks: 'As tarefas que a tripulação errou no caminho custaram recursos.',
         clean: 'Missão limpa: as escolhas do começo seguraram a viagem até a volta para casa.'
       },
+      twin: {
+        t: 'Missão real parecida com a sua',
+        like: 'Igual à sua', diff: 'No lugar, ela tinha',
+        part: { energy: { solar: 'painel solar', rtg: 'gerador nuclear (RTG)' }, prop: { chem: 'motor químico', ion: 'motor de íons' }, shield: { heavy: 'escudo térmico reforçado', light: 'escudo leve ou nenhum' }, inst: { kit: 'kit científico', cam: 'foco em câmera' } },
+        m: {
+          osiris: 'Tocou o asteroide Bennu em 2020 e deixou 121,6 g de amostra no deserto de Utah em 2023.',
+          hayabusa2: 'Da JAXA, a agência do Japão: com motores de íons, foi ao asteroide Ryugu e trouxe cerca de 5 g de amostra para a Austrália em 2020.',
+          stardust: 'Atravessou a cauda do cometa Wild 2 e trouxe a poeira dele para Utah em 2006.',
+          perseverance: 'Pousou na cratera Jezero, em Marte, em 2021, movido a gerador nuclear, e guarda amostras de rocha para uma volta futura.',
+          insight: 'Módulo de pouso com painéis solares que escutou os terremotos de Marte de 2018 a 2022.',
+          dawn: 'Com motor de íons, orbitou dois mundos: o asteroide Vesta e o planeta-anão Ceres (2011 a 2018).',
+          psyche: 'Lançada em 2023 rumo a um asteroide rico em metal, com propulsão elétrica movida pelo Sol. Chegada prevista para 2029.',
+          lcross: 'Em 2009 se lançou contra a cratera Cabeus, no polo sul da Lua, e confirmou gelo de água na nuvem do impacto.',
+          voyager: 'Lançadas em 1977, com geradores nucleares e antenas grandes. A Voyager 1 é o objeto humano mais distante da Terra.'
+        }
+      },
       card: (r) => `${r.titleText}: nota ${r.score}/100 e ${r.earned} pontos de ciência ganhos. Veja o relatório e jogue de novo com outras escolhas.`
     },
     tlistEmpty: 'Nenhum alerta até agora.',
@@ -1011,6 +1037,22 @@ const I18N = {
         sci: 'Little science on board. The science kit, the large antenna or the Vandenberg site bring more data.',
         tasks: 'The tasks the crew failed along the way cost resources.',
         clean: 'Clean mission: the early choices carried the trip all the way home.'
+      },
+      twin: {
+        t: 'Real mission like yours',
+        like: 'Same as yours', diff: 'Instead, it had',
+        part: { energy: { solar: 'solar panels', rtg: 'nuclear generator (RTG)' }, prop: { chem: 'chemical engine', ion: 'ion engine' }, shield: { heavy: 'reinforced heat shield', light: 'light or no heat shield' }, inst: { kit: 'science kit', cam: 'camera focus' } },
+        m: {
+          osiris: 'Touched asteroid Bennu in 2020 and dropped 121.6 g of sample in the Utah desert in 2023.',
+          hayabusa2: "From JAXA, Japan's space agency: ion engines took it to asteroid Ryugu, and it brought about 5 g of sample to Australia in 2020.",
+          stardust: 'Flew through the tail of comet Wild 2 and brought its dust back to Utah in 2006.',
+          perseverance: 'Landed in Jezero Crater, Mars, in 2021, powered by a nuclear generator, and stores rock samples for a future return.',
+          insight: 'A solar-powered lander that listened to marsquakes from 2018 to 2022.',
+          dawn: 'With an ion engine, it orbited two worlds: asteroid Vesta and dwarf planet Ceres (2011 to 2018).',
+          psyche: 'Launched in 2023 toward a metal-rich asteroid, with solar electric propulsion. Arrival planned for 2029.',
+          lcross: "In 2009 it crashed into Cabeus crater, at the Moon's south pole, and confirmed water ice in the impact plume.",
+          voyager: 'Launched in 1977, with nuclear generators and big antennas. Voyager 1 is the farthest human-made object from Earth.'
+        }
       },
       card: (r) => `${r.titleText}: score ${r.score}/100 and ${r.earned} science points earned. Check the report and play again with other choices.`
     },
@@ -2297,16 +2339,43 @@ function missionReport() {
   const lead = lesson === L.clean ? '' : R.lead[grade === 'ok' ? 'better' : 'hurt'];
   return { grade, score, earned, rows, lesson: lead + lesson, titleText: R.title[grade] };
 }
+// real missions for the "mission like yours" box (idea from the Learning Game About Telescopes resource). Simplified parts; facts in I18N rep.twin.m
+const TWINS = [
+  { id: 'osiris', name: 'OSIRIS-REx', who: 'NASA · 2016–2023', obj: 'amostras', energy: 'solar', prop: 'chem', shield: 'heavy', inst: 'kit' },
+  { id: 'stardust', name: 'Stardust', who: 'NASA · 1999–2006', obj: 'amostras', energy: 'solar', prop: 'chem', shield: 'heavy', inst: 'cam' },
+  { id: 'hayabusa2', name: 'Hayabusa2', who: 'JAXA · 2014–2020', obj: 'amostras', energy: 'solar', prop: 'ion', shield: 'heavy', inst: 'kit' },
+  { id: 'perseverance', name: 'Perseverance', who: 'NASA · 2020–', obj: 'estudar', energy: 'rtg', prop: 'chem', shield: 'heavy', inst: 'kit' },
+  { id: 'insight', name: 'InSight', who: 'NASA · 2018–2022', obj: 'estudar', energy: 'solar', prop: 'chem', shield: 'heavy', inst: 'kit' },
+  { id: 'dawn', name: 'Dawn', who: 'NASA · 2007–2018', obj: 'estudar', energy: 'solar', prop: 'ion', shield: 'light', inst: 'cam' },
+  { id: 'voyager', name: 'Voyager', who: 'NASA · 1977–', obj: 'estudar', energy: 'rtg', prop: 'chem', shield: 'light', inst: 'kit' },
+  { id: 'psyche', name: 'Psyche', who: 'NASA · 2023–', obj: 'recursos', energy: 'solar', prop: 'ion', shield: 'light', inst: 'kit' },
+  { id: 'lcross', name: 'LCROSS', who: 'NASA · 2009', obj: 'recursos', energy: 'solar', prop: 'chem', shield: 'light', inst: 'kit' }
+];
+const TWIN_KEYS = ['energy', 'prop', 'shield', 'inst'], TWIN_W = { energy: 2, prop: 2, shield: 1, inst: 1 };
+function twinFor(b, objId) {                       // highest score wins; ties keep the list order
+  let best = null, bs = -1;
+  for (const m of TWINS) {
+    const sc = (m.obj === objId ? 3 : 0) + TWIN_KEYS.reduce((a, k) => a + (m[k] === b[k] ? TWIN_W[k] : 0), 0);
+    if (sc > bs) { bs = sc; best = m; }
+  }
+  return { m: best, same: TWIN_KEYS.filter((k) => best[k] === b[k]), diff: TWIN_KEYS.filter((k) => best[k] !== b[k]) };
+}
+function twinHTML(b, objId) {
+  const T = t('rep').twin, x = twinFor(b, objId), P = (k) => T.part[k][x.m[k]];
+  return `<div class="twin"><p class="tw-h">${T.t}</p><p class="tw-n"><b>${x.m.name}</b><span>${x.m.who}</span></p><p class="tw-f">${T.m[x.m.id]}</p>` +
+    `<p class="tw-c">${x.same.length ? `<i class="ok">${T.like}:</i> ${x.same.map(P).join(', ')}.` : ''}${x.diff.length ? ` <i class="dif">${T.diff}:</i> ${x.diff.map(P).join(', ')}.` : ''}</p></div>`;
+}
 function onReport() { return state.phase === 6 && state.mode === 'checkpoint' && !state.task && !state.failed; }
 function paintAlert() {
   const el = $('alert');
+  el.classList.toggle('rep', onReport());
   if (onReport()) {
     const r = missionReport(), R = t('rep');
     el.hidden = false; $('tlist').hidden = true;     // the report replaces the task list
     el.innerHTML = (r.grade === 'ok' ? PASS : r.grade === 'mid' ? STAR : COMET) + `<h2>${r.titleText}</h2>` +
-      `<p class="score">${R.score} <b>${r.score}</b>/100<span>${R.earned(r.earned)}</span></p><ul>` +
+      `<p class="score">${R.score} <b>${r.score}</b>/100<span>${R.earned(r.earned)}</span></p><div class="rep-g"><ul>` +
       r.rows.map(([c, txt, tag]) => `<li class="${c}">${svg(c === 'ok' ? 'check' : c === 'mid' ? 'warn' : 'close')}<span>${txt}</span><em>${tag}</em></li>`).join('') +
-      `</ul><p class="why">${r.lesson}</p>`;
+      `</ul><div><p class="why">${r.lesson}</p>` + twinHTML(state.build || DEFAULT_BUILD, state.objective || 'amostras') + '</div></div>';
     return;
   }
   if (state.failed) {                                          // mission not successful: what went wrong

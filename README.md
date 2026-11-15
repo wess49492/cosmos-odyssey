@@ -14,7 +14,7 @@ Students rarely live a whole space mission, so engineering trade-offs stay abstr
 4. **Final design and fabrication:** assemble the rocket and tune the parameters.
 5. **Assembly, integration and test:** the requirements decide if the test flight passes.
 6. **Operations:** launch and fly, solving random crew tasks, each one opening with a short science note.
-7. **Closeout and return:** reentry, landing and a final mission report that shows which early choice made the difference.
+7. **Closeout and return:** reentry, landing and a final mission report that shows which early choice made the difference, plus the real mission most like your spacecraft (OSIRIS-REx, Stardust, Hayabusa2, Perseverance, InSight, Dawn, Voyager, Psyche or LCROSS) and what it did differently.
 
 English and Portuguese (EN / PT button). Everything runs in a single `index.html` file.
 
@@ -23,6 +23,7 @@ English and Portuguese (EN / PT button). Everything runs in a single `index.html
 - NASA Systems Engineering Handbook and NASA project life cycle (Pre-Phase A to Phase F).
 - Concept Maturity Levels (JPL) and NASA's Mission Design Lab: phases 1 to 3 show how mature your concept is (CML 1-2, 3 and 4) and the matching MDL study (Office Hours and Concept Development, Trade Study, Point Design); each spacecraft row is one MDL discipline (power, propulsion, thermal, communications, science payload).
 - NASA mission pages: OSIRIS-REx, Mars 2020 Perseverance (and MOXIE), LCROSS, Psyche.
+- A Learning Game About Telescopes (challenge resource): the idea of ending by comparing the player's design with real missions.
 
 Numbers in the game are simplified for learning; the crew characters are fictional.
 
