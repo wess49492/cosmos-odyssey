@@ -26,13 +26,13 @@ English and Portuguese (EN / PT button). Everything runs in a single `index.html
 - GMAT, NASA's General Mission Analysis Tool (challenge resource): the launch-window step is a simplified version of its launch-window analysis.
 - A Learning Game About Telescopes (challenge resource): the idea of ending by comparing the player's design with real missions.
 
-Numbers in the game are simplified for learning; the crew characters are fictional.
+Numbers in the game are simplified for learning. The crew is named after the Artemis II astronauts (Reid Wiseman, Victor Glover, Christina Koch and Jeremy Hansen) as a tribute; their lines in the game are invented, not quotes, and the game is not endorsed by them, by NASA or by the CSA.
 
 ## Use of AI
 The game idea and every design decision came from our team. We used AI tools as follows:
 - **Code and texts:** most of the code (HTML, CSS, JavaScript), the in-game texts and the English translation were written with the help of an AI coding assistant (Claude, by Anthropic), following our specifications. We reviewed and tested everything.
 - **Research:** Google Gemini gave us a first summary of NASA mission-process pages, which we checked against the NASA Systems Engineering Handbook.
-- **Crew portraits:** the four crew faces are AI-generated images, used for fictional characters (no real names, no NASA logos).
+- **Crew portraits:** the four crew faces are AI-generated caricatures named after the Artemis II astronauts, with the NASA logo covered. Their speech balloons are written for the game.
 - **No AI-generated audio or video.** All other visuals are drawn in code or are screenshots of the game.
 
 The same notice is in the `ai-assistance` meta tag at the top of `index.html`.

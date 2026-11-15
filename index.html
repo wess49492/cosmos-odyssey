@@ -6,11 +6,12 @@
 <meta name="color-scheme" content="dark">
 <meta name="description" content="Cosmos Odyssey: a NASA mission design game by Team Capella Stars, NASA Space Apps Challenge 2026.">
 <meta name="author" content="Team Capella Stars">
-<meta name="ai-assistance" content="Code and in-game texts written with the help of an AI coding assistant (Claude, by Anthropic), from the team's own game design. The crew portraits are AI-generated images. No AI-generated audio or video.">
+<meta name="ai-assistance" content="Code and in-game texts written with the help of an AI coding assistant (Claude, by Anthropic), from the team's own game design. The crew portraits are AI-generated caricatures named after the Artemis II astronauts; their lines are invented for the game and are not quotes. No AI-generated audio or video.">
 <!-- AI disclosure: game idea and design by Team Capella Stars. Most of this code, the in-game texts and the English translation
      were written with the help of an AI coding assistant (Claude, Anthropic) and reviewed and tested by the team.
      Google Gemini was used only to summarize NASA mission-process pages during research.
-     The crew portraits (fictional characters, no real names or NASA logos) are AI-generated images. No AI-generated audio or video. -->
+     The crew portraits are AI-generated caricatures named after the Artemis II astronauts (Wiseman, Glover, Koch, Hansen), with the NASA logo covered;
+     their lines are invented for the game, not things they said, and the game is not endorsed by them or by NASA. No AI-generated audio or video. -->
 <title>Cosmos Odyssey · Capella Stars</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -735,9 +736,9 @@ const I18N = {
     toastBack: 'De volta ao projeto preliminar',
     ctaBackFab: 'Refazer a fabricação', toastBackFab: 'De volta à fabricação',
     failFab: 'A inspeção achou defeito de fabricação. O projeto está certo: refaça a fabricação.',
-    // crew: fictional characters (heads inspired by chibi astronaut stickers), not real astronauts
+    // crew: named after the Artemis II astronauts (Wes's choice, 2026-11-15); faces are AI-generated stickers, lines are invented for the game
     crew: {
-      caio: ['Caio', 'Comandante'], davi: ['Davi', 'Piloto'], nara: ['Nara', 'Engenheira de voo'], tomas: ['Tomás', 'Especialista']
+      caio: ['Wiseman', 'Comandante'], davi: ['Glover', 'Piloto'], nara: ['Koch', 'Especialista de missão'], tomas: ['Hansen', 'Especialista de missão']
     },
     talk: {
       launch: ['caio', 'laugh', 'Ignição! Contagem zerada, segurem firme!'],
@@ -1046,7 +1047,7 @@ const I18N = {
     ctaBackFab: 'Redo fabrication', toastBackFab: 'Back to fabrication',
     failFab: 'Inspection found a fabrication defect. The design is right: redo the fabrication.',
     crew: {
-      caio: ['Caio', 'Commander'], davi: ['Davi', 'Pilot'], nara: ['Nara', 'Flight engineer'], tomas: ['Tomás', 'Specialist']
+      caio: ['Wiseman', 'Commander'], davi: ['Glover', 'Pilot'], nara: ['Koch', 'Mission specialist'], tomas: ['Hansen', 'Mission specialist']
     },
     talk: {
       launch: ['caio', 'laugh', 'Ignition! Countdown at zero, hold on tight!'],
@@ -1698,7 +1699,7 @@ function drawDz(now) {
   }
 }
 
-/* ---------- crew: fictional astronauts. Faces are PNG stickers (img/crew/<id>-<expression>.png),
+/* ---------- crew: named after the Artemis II crew, lines invented for the game. Faces are PNG stickers (img/crew/<id>-<expression>.png),
    cut from the reference sheet with the real name tags and the agency logo covered ---------- */
 const CREW = [{ id: 'caio' }, { id: 'davi' }, { id: 'nara' }, { id: 'tomas' }];
 const EXPR = ['happy', 'laugh', 'surprised', 'worried', 'angry', 'cry', 'wink'];
