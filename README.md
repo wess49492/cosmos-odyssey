@@ -32,7 +32,7 @@ Numbers in the game are simplified for learning. The crew is named after the Art
 The game idea and every design decision came from our team. We used AI tools as follows:
 - **Code and texts:** most of the code (HTML, CSS, JavaScript), the in-game texts and the English translation were written with the help of an AI coding assistant (Claude, by Anthropic), following our specifications. We reviewed and tested everything.
 - **Research:** Google Gemini gave us a first summary of NASA mission-process pages, which we checked against the NASA Systems Engineering Handbook.
-- **Crew portraits:** the four crew faces are AI-generated caricatures named after the Artemis II astronauts, with the NASA logo covered. Their speech balloons are written for the game.
+- **Crew portraits:** the four crew faces and the full-body crew line-up shown before launch are AI-generated caricatures named after the Artemis II astronauts, with the NASA logo covered (the line-up screen says so on screen). Their speech balloons are written for the game.
 - **No AI-generated audio or video.** All other visuals are drawn in code or are screenshots of the game.
 
 The same notice is in the `ai-assistance` meta tag at the top of `index.html`.
