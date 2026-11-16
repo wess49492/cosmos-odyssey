@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cosmos Odyssey: Documentação</title>
+<meta name="description" content="Cosmos Odyssey (NASA Space Apps 2026, Space Mission Design Game): referências da NASA usadas, onde a IA foi usada e como o jogo funciona.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #071027; --panel: #0b1730; --line: #1d2d52; --text: #e6ecff; --muted: #9fb0d6;
+  --accent: #7cc4ff; --warm: #ffcf6e; --ok: #6fe0a6; --no: #ff8c7a;
+  --game: 'Chakra Petch', system-ui, sans-serif; --body: 'Inter', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; color: var(--text); font: 400 16px/1.6 var(--body); background: radial-gradient(1200px 600px at 80% -10%, #12285a 0%, transparent 60%), var(--bg); }
+main { max-width: 980px; margin: 0 auto; padding: 48px 20px 80px; }
+h1, h2, h3 { font-family: var(--game); line-height: 1.2; letter-spacing: .01em; }
+h1 { font-size: clamp(32px, 6vw, 52px); margin: 0 0 6px; }
+h2 { font-size: 24px; margin: 56px 0 14px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--accent); }
+h3 { font-size: 18px; margin: 28px 0 8px; }
+p { margin: 0 0 14px; max-width: 76ch; }
+a { color: var(--accent); }
+.kicker { font: 700 13px/1 var(--game); letter-spacing: .14em; text-transform: uppercase; color: var(--warm); margin-bottom: 14px; }
+.lead { font-size: 18px; color: var(--muted); max-width: 70ch; }
+.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin: 28px 0 8px; }
+.meta div { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.meta b { display: block; font: 700 12px/1.3 var(--game); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+nav ol { columns: 2; column-gap: 32px; padding-left: 20px; margin: 18px 0 0; color: var(--muted); }
+@media (max-width: 640px) { nav ol { columns: 1; } }
+.table-wrap { overflow-x: auto; margin: 10px 0 18px; border: 1px solid var(--line); border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 640px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { font: 700 12px/1.3 var(--game); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--panel); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; }
+.tag { display: inline-block; font: 700 11px/1 var(--game); letter-spacing: .08em; text-transform: uppercase; padding: 4px 7px; border-radius: 5px; white-space: nowrap; }
+.tag.yes { background: rgba(255, 207, 110, .14); color: var(--warm); }
+.tag.no { background: rgba(111, 224, 166, .14); color: var(--ok); }
+ul { padding-left: 20px; max-width: 80ch; }
+li { margin-bottom: 6px; }
+.note { background: var(--panel); border-left: 3px solid var(--warm); border-radius: 6px; padding: 12px 16px; margin: 16px 0; color: var(--muted); max-width: 80ch; }
+footer { margin-top: 64px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+
+<div class="kicker">NASA Space Apps Challenge 2026 · Space Mission Design Game</div>
+<h1>Cosmos Odyssey</h1>
+<p class="lead">Documentação do projeto: as referências e os dados da NASA usados no jogo, onde a IA foi usada em cada etapa do projeto e como o jogo funciona.</p>
+
+<div class="meta">
+  <div><b>Equipe</b>Capella Stars (Recife)</div>
+  <div><b>Jogar</b><a href="https://wess49492.github.io/cosmos-odyssey/">wess49492.github.io/cosmos-odyssey</a></div>
+  <div><b>Código-fonte</b><a href="https://github.com/wess49492/cosmos-odyssey">github.com/wess49492/cosmos-odyssey</a></div>
+  <div><b>Pitch (PDF)</b><a href="https://wess49492.github.io/cosmos-odyssey/cosmos-odyssey-pitch.pdf">7 slides</a></div>
+</div>
+
+<nav aria-label="Sumário">
+<ol>
+  <li><a href="#sobre">O que é o jogo</a></li>
+  <li><a href="#etapas">Como o jogo segue as fases da NASA</a></li>
+  <li><a href="#dados">Referências e dados da NASA usados</a></li>
+  <li><a href="#numeros">Fatos e números reais no jogo</a></li>
+  <li><a href="#simplificado">O que simplificamos</a></li>
+  <li><a href="#ia">Uso de IA, etapa por etapa</a></li>
+  <li><a href="#tecnico">Detalhes técnicos</a></li>
+  <li><a href="#refs">Outras referências e créditos</a></li>
+</ol>
+</nav>
+
+<h2 id="sobre">1. O que é o jogo</h2>
+<p>Estudantes quase nunca vivem uma missão espacial inteira, então as escolhas de engenharia ficam abstratas. O Cosmos Odyssey é um jogo de navegador em que o jogador planeja, constrói, lança e traz de volta uma missão científica, seguindo as 7 fases do ciclo de vida de projetos da NASA, dos estudos de conceito (Pre-Phase A) ao encerramento (Phase F).</p>
+<p>Toda decisão tem um custo. Os pontos de ciência são o orçamento, cada peça da nave troca uma vantagem por uma desvantagem, e combustível, energia, massa e cronograma mudam na hora. Os requisitos são verificados antes de um voo de teste, tarefas aleatórias da tripulação testam o projeto durante a viagem e um relatório final mostra qual escolha do começo decidiu o resultado. O jogo roda em qualquer navegador, em inglês ou português, sem instalar nada e sem login.</p>
+
+<h2 id="etapas">2. Como o jogo segue as fases da NASA</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Etapa do jogo</th><th>Fase da NASA</th><th>O que o jogador faz</th><th>Conceito da NASA mostrado</th></tr></thead>
+<tbody>
+<tr><td>1. Estudos de conceito</td><td>Pre-Phase A</td><td>Compara três alternativas de missão baseadas em missões reais e lê o relatório de cada uma.</td><td>Alternativas, segmentos da missão, CML 1-2 (MDL Office Hours e Concept Development)</td></tr>
+<tr><td>2. Desenvolvimento do conceito</td><td>Phase A</td><td>Escolhe o objetivo, a base de lançamento num globo 3D e a data de lançamento numa linha do tempo da janela de lançamento.</td><td>Bases de lançamento, janelas de lançamento (GMAT), CML 3 (MDL Trade Study)</td></tr>
+<tr><td>3. Projeto preliminar</td><td>Phase B</td><td>Monta a nave com pontos de ciência, uma peça por linha, e lê os requisitos com o método de verificação de cada um.</td><td>Trade-offs, requisitos com verificação, CML 4 (MDL Point Design), disciplinas do MDL</td></tr>
+<tr><td>4. Projeto final e fabricação</td><td>Phase C</td><td>Monta o foguete (arrastar e soltar) e ajusta parâmetros dentro da tolerância. Os erros viram defeitos escondidos.</td><td>Tolerâncias de fabricação, defeitos</td></tr>
+<tr><td>5. Montagem, integração e teste</td><td>Phase D</td><td>Um foguete de teste voa e os requisitos decidem se ele passa. Se falhar, a equipe volta para o projeto ou para a fabricação.</td><td>Verificação, Flight Readiness Review</td></tr>
+<tr><td>6. Operação</td><td>Phase E</td><td>Lançamento e viagem, com tarefas aleatórias da tripulação (minijogos) cuja chance depende do projeto, mais a tarefa própria do objetivo no destino.</td><td>Correção de trajetória, Deep Space Network, blindagem, controle térmico, tempestades solares</td></tr>
+<tr><td>7. Encerramento e retorno</td><td>Phase F</td><td>Ângulo de reentrada, paraquedas, pouso e um relatório final com nota, lição aprendida e a missão real mais parecida.</td><td>Encerramento, lições aprendidas, comparação com missões reais</td></tr>
+</tbody>
+</table></div>
+
+<h2 id="dados">3. Referências e dados da NASA usados</h2>
+<p>A maioria vem da própria aba Resources do desafio. A coluna da direita diz onde cada uma aparece no jogo.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Fonte</th><th>O que tiramos dela</th><th>Onde aparece no jogo</th></tr></thead>
+<tbody>
+<tr><td>Design and Develop Science Missions (NASA, recurso oficial do desafio)</td><td>O processo geral (necessidades e metas, conceito, requisitos, projeto, construir e verificar, implementar), os quatro segmentos da missão (lançamento, espaço, solo, usuário) e a regra "escrever cada requisito junto com o modo de verificá-lo".</td><td>Painel lateral que acompanha o processo; relatórios das missões na etapa 1; requisitos nas etapas 3 e 5.</td></tr>
+<tr><td>NASA Systems Engineering Handbook e NASA Space Flight Program and Project Management Handbook</td><td>O ciclo de vida do projeto (Pre-Phase A a Phase F), Formulação e Implementação, e as revisões entre fases (PDR, Flight Readiness Review, KDP).</td><td>A estrutura do jogo inteiro: a faixa das 7 etapas e as revisões entre elas.</td></tr>
+<tr><td>Concept Maturity Levels (JPL) e Mission Design Lab da NASA (recursos do desafio)</td><td>Os níveis CML 1-2, 3 e 4 e os estudos do MDL correspondentes (Office Hours e Concept Development, Trade Study, Point Design), e as disciplinas do MDL.</td><td>Um selo de maturidade nos cartões das etapas 1 a 3; cada linha da montagem da nave é uma disciplina do MDL: energia, propulsão, térmica, comunicação e carga científica.</td></tr>
+<tr><td>GMAT, General Mission Analysis Tool (recurso do desafio)</td><td>A ideia da análise de janela de lançamento: alguns dias gastam muito menos combustível que outros.</td><td>Passo da janela de lançamento na etapa 2, com a frequência real de cada destino.</td></tr>
+<tr><td>A Learning Game About Telescopes (recurso do desafio)</td><td>Terminar o jogo comparando o projeto do jogador com missões reais.</td><td>"Missão real mais parecida com a sua", no relatório final.</td></tr>
+<tr><td>Páginas de missões da NASA: <a href="https://science.nasa.gov/mission/osiris-rex/">OSIRIS-REx</a>, <a href="https://science.nasa.gov/mission/mars-2020-perseverance/science-highlights/">Mars 2020 Perseverance</a> e o <a href="https://www.jpl.nasa.gov/news/press_kits/mars_2020/landing/mission/">press kit de pouso do JPL</a>, <a href="https://www.nasa.gov/missions/mars-2020-perseverance/perseverance-rover/nasas-oxygen-generating-experiment-moxie-completes-mars-mission/">MOXIE</a>, <a href="https://science.nasa.gov/mission/lcross/">LCROSS</a>, <a href="https://science.nasa.gov/mission/psyche/mission-overview/">Psyche</a></td><td>Datas, números, objetivos e desafios reais.</td><td>As três alternativas de missão da etapa 1 e seus relatórios.</td></tr>
+<tr><td>Perfis públicos das missões Stardust, Hayabusa2 (JAXA), InSight, Dawn e Voyager</td><td>Fonte de energia, propulsão, escudo térmico e instrumentos de cada missão.</td><td>A comparação com nove missões no relatório final.</td></tr>
+<tr><td>Bases de lançamento da NASA: Kennedy Space Center, Vandenberg, Wallops Flight Facility</td><td>Latitude e uso típico de cada base.</td><td>Globo 3D da etapa 2.</td></tr>
+<tr><td>Explicações da NASA sobre operação de naves</td><td>Manobras de correção de trajetória, a Deep Space Network, a blindagem Whipple da Estação Espacial, tempestades solares e o abrigo da Orion, controle térmico, energia por RTG (Voyager).</td><td>A nota científica curta que abre cada tarefa da tripulação na etapa 6.</td></tr>
+</tbody>
+</table></div>
+
+<h2 id="numeros">4. Fatos e números reais no jogo</h2>
+<ul>
+  <li><b>OSIRIS-REx:</b> lançada em 2016, coletou amostra do asteroide Bennu em 2020 e trouxe 121,6 g em 2023; a nave segue como OSIRIS-APEX rumo ao asteroide Apophis.</li>
+  <li><b>Perseverance:</b> pousou na cratera Jezero, em Marte, com entrada, descida e pouso usando paraquedas.</li>
+  <li><b>MOXIE:</b> produziu 122 g de oxigênio em Marte, com pico de 12 g por hora.</li>
+  <li><b>LCROSS:</b> encontrou água na cratera Cabeus, perto do polo sul da Lua, em 2009.</li>
+  <li><b>Psyche:</b> lançada em 2023 rumo a um asteroide rico em metal.</li>
+  <li><b>Bases de lançamento:</b> Kennedy 28,6° N (a rotação da Terra ajuda na subida para leste), Vandenberg 34,8° N (órbitas polares), Wallops 37,9° N (foguetes menores e mais baratos).</li>
+  <li><b>Janelas de lançamento:</b> Marte a cada 26 meses, mais ou menos; o asteroide Bennu a cada 6 anos (pelo período sinódico); a Lua a cada 27 dias. Os lançamentos da Perseverance (2020) e da OSIRIS-REx (2016, sobrevoo da Terra em 2017) aparecem como exemplo.</li>
+  <li><b>Comparação com missões reais:</b> OSIRIS-REx, Stardust, Hayabusa2, Perseverance, InSight, Dawn, Voyager, Psyche e LCROSS, comparadas por objetivo, energia, propulsão, escudo térmico e instrumentos.</li>
+</ul>
+
+<h2 id="simplificado">5. O que simplificamos</h2>
+<p>O jogo é para iniciantes, então algumas coisas foram simplificadas de propósito:</p>
+<ul>
+  <li>Combustível, energia, massa, cronograma e valor científico são unidades do jogo, não valores de engenharia.</li>
+  <li>Cada linha da nave tem só duas opções (por exemplo, painel solar ou RTG; propulsão química ou iônica).</li>
+  <li>A ligação com CML e MDL é simplificada: um selo de maturidade por etapa, uma disciplina por linha.</li>
+  <li>A janela de lançamento é uma linha do tempo jogável, não um cálculo orbital. As frequências são reais; os custos de combustível são do jogo.</li>
+  <li>A missão de "minerar recursos" é uma ideia futura montada a partir de LCROSS, MOXIE e Psyche, não uma missão real.</li>
+  <li>A tripulação leva o nome dos astronautas da Artemis II (Reid Wiseman, Victor Glover, Christina Koch, Jeremy Hansen) como homenagem. As falas são inventadas para o jogo, não são citações, e o jogo não tem endosso deles, da NASA nem da CSA.</li>
+</ul>
+
+<h2 id="ia">6. Uso de IA, etapa por etapa</h2>
+<p>A escolha do desafio, a ideia do jogo e as decisões de design vieram da nossa equipe. A IA foi usada como ferramenta nas etapas abaixo, e alguém da equipe revisou cada resultado.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Etapa do projeto</th><th>Usou IA?</th><th>Ferramenta</th><th>O que a IA fez</th><th>O que a equipe fez</th></tr></thead>
+<tbody>
+<tr><td>Escolha do desafio e ideia do jogo</td><td><span class="tag no">Não</span></td><td>Nenhuma</td><td>Nada.</td><td>Escolheu o desafio e definiu o conceito nas reuniões: a missão como um sistema único, as 7 fases da NASA, pontos de ciência como orçamento, peças com trade-offs, tarefas da tripulação.</td></tr>
+<tr><td>Pesquisa</td><td><span class="tag yes">Sim</span></td><td>Google Gemini; Claude (Anthropic)</td><td>O Gemini fez um primeiro resumo das páginas da NASA sobre o processo de missão. O Claude ajudou a ler as páginas de Resources do desafio e apontou quais cabiam no jogo.</td><td>Conferiu as 7 fases no NASA Systems Engineering Handbook e escolheu quais recursos usar.</td></tr>
+<tr><td>Design detalhado do jogo</td><td><span class="tag yes">Em parte</span></td><td>Claude</td><td>Propôs opções quando pedimos (por exemplo, pares possíveis de peças da nave, ou como poderia funcionar a janela de lançamento).</td><td>Escolheu, mudou ou descartou cada opção e definiu as regras.</td></tr>
+<tr><td>Programação</td><td><span class="tag yes">Sim</span></td><td>Claude, como assistente de código</td><td>Escreveu a maior parte do código (HTML, CSS, JavaScript) a partir das nossas especificações.</td><td>Dirigiu cada funcionalidade, jogou e testou cada versão, apontou erros e pediu correções.</td></tr>
+<tr><td>Textos do jogo e tradução</td><td><span class="tag yes">Sim</span></td><td>Claude</td><td>Redigiu os textos do jogo, as notas científicas e os relatórios das missões a partir das fontes da NASA, e traduziu do português para o inglês.</td><td>Revisou o conteúdo e os fatos.</td></tr>
+<tr><td>Imagens da tripulação</td><td><span class="tag yes">Sim</span></td><td>Geração de imagem por IA</td><td>Gerou as quatro caricaturas da tripulação (rostos e corpo inteiro).</td><td>Escolheu as imagens; o logo da NASA nos trajes foi coberto.</td></tr>
+<tr><td>Outros visuais (cenas, globo, foguete, diagramas)</td><td><span class="tag no">Não</span></td><td>Nenhuma</td><td>Nada gerado: são desenhados em código (Canvas 2D).</td><td>Especificou cada cena.</td></tr>
+<tr><td>Áudio e vídeo</td><td><span class="tag no">Não</span></td><td>Nenhuma</td><td>O jogo não tem áudio nem vídeo gerado por IA.</td><td></td></tr>
+<tr><td>Testes</td><td><span class="tag yes">Em parte</span></td><td>Claude</td><td>Rodou verificações automáticas no navegador (layout em vários tamanhos de tela, erros no console).</td><td>Jogou no computador e no celular e apontou o que quebrava.</td></tr>
+<tr><td>Pitch e textos da submissão</td><td><span class="tag yes">Sim</span></td><td>Claude</td><td>Ajudou a montar os slides e a redigir os textos da submissão e esta documentação.</td><td>Definiu o conteúdo e a mensagem, e revisou cada slide e texto.</td></tr>
+</tbody>
+</table></div>
+<p class="note">A mesma declaração está no README do projeto e na meta tag <code>ai-assistance</code> no topo do <code>index.html</code> do jogo.</p>
+
+<h2 id="tecnico">7. Detalhes técnicos</h2>
+<ul>
+  <li><b>Um arquivo só:</b> o jogo inteiro é um único <code>index.html</code>, com HTML5 Canvas 2D e JavaScript puro. Sem servidor, sem instalação, sem framework.</li>
+  <li><b>Dois idiomas:</b> inglês e português, trocados com um botão.</li>
+  <li><b>Acessibilidade básica:</b> foco pelo teclado, opção de movimento reduzido e mensagens de status para leitor de tela.</li>
+  <li><b>Privacidade:</b> sem login, sem cookies de rastreamento, sem coleta de dados. Nada sai do navegador do jogador.</li>
+  <li><b>Celular:</b> o jogo foi feito para tela de computador. No celular ele mostra o mesmo layout reduzido para caber na tela deitada e sugere jogar no computador para uma experiência melhor.</li>
+  <li><b>Hospedagem:</b> GitHub Pages. Fontes do Google Fonts (Chakra Petch, licença SIL Open Font).</li>
+</ul>
+
+<h2 id="refs">8. Outras referências e créditos</h2>
+<ul>
+  <li>Não usamos dados de agências parceiras.</li>
+  <li>Voo 501 do Ariane 5 (1996), citado numa nota científica sobre software de voo (registro público da ESA).</li>
+  <li>As tarefas da tripulação se inspiram no estilo de jogos como Among Us. Nenhum elemento dele é usado.</li>
+  <li>Equipe Capella Stars, Recife.</li>
+</ul>
+
+<footer>Cosmos Odyssey · NASA Space Apps Challenge 2026 · <i>Per aspera ad astra.</i></footer>
+</main>
+</body>
+</html>
